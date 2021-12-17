@@ -8,24 +8,68 @@
 
 <!-- <div class="container"> -->
 
+  <br>
+
 <div class="row">
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+    <div class="col-sm-5">
+
+
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">Phone</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+        {% for cust in customer %}
+          <tr>
+            <td>{{cust.name}}</td>
+            <td>{{cust.phone}}</td>
+          </tr>
+
+        {% endfor %}
+
+        </tbody>
+      </table>
+      
+
     </div>
-    <div class="col-sm-6">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Special title treatment</h5>
-          <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-          <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-      </div>
+
+
+    <div class="col-sm-7">
+
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Date Ordered</th>
+            <th scope="col">Status</th>
+            <th scope="col">Update</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          
+        {% for ord in orders %}
+        <tr>
+          <td>{{ord.product}}</td>
+          <td>{{ord.date_created}}</td>
+          <td>{{ord.status}}</td>
+          <td>Update</td>
+          <td>Remove</td>
+        </tr>
+
+      {% endfor %}
+
+
+
+        </tbody>
+      </table>
+    
+    
     </div>
   </div>
 

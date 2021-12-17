@@ -4,5 +4,27 @@
 
 <h1>Products</h1>
 
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Catagory</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+        {% for i in product %}
+      <tr>
+        <td>{{i.name}}</td>
+        <td>{{i.catagory}}</td>
+        <td>{{i.price}}</td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+
+
+
 
 {% endblock %}
