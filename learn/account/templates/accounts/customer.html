@@ -1,0 +1,74 @@
+{% extends 'accounts/main.html' %}
+
+{% block content%}
+
+<h1>Dashboard</h1>
+
+
+<div class="card-deck">
+
+
+  
+  <div class="card">      
+    <div class="card-body">
+      <h3 class="card-header">Customer</h3>
+      <h5 class="card-title">{{customer.name}}</h5>
+    </div>
+  </div>
+  
+  <div class="card">      
+    <div class="card-body">
+      <h3 class="card-header">Contact Information</h3>
+      <h5 class="card-title"><b>Email:</b> {{customer.email}}</h5>
+      <h5 class="card-title"><b>Phone:</b> {{customer.phone}}</h5>
+    </div>
+  </div>
+  
+  <div class="card">      
+    <div class="card-body">
+      <h3 class="card-header">Total Orders</h3>
+      <h5 class="card-title">{{orders_count }}</h5>
+    </div>
+  </div>
+
+  </div>
+
+
+
+
+  <br>
+
+<div class="row">
+    
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Catagory</th>
+            <th scope="col">Date Ordered</th>
+            <th scope="col">Status</th>
+            <th scope="col">Update</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for ord in orders %}
+
+        <tr>
+          <td>{{ord.product}}</td>
+          <td>{{ord.product.catagory}}</td>
+          <td>{{ord.date_created}}</td>
+          <td>{{ord.status}}</td>
+          <td>Update</td>
+          <td>Remove</td>
+        </tr>
+      {%endfor %}
+        </tbody>
+      </table>
+    
+  </div>
+
+<!-- </div> -->
+
+{% endblock %}
