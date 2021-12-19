@@ -13,10 +13,14 @@
 <div class="row">
     <div class="col-sm-5">
 
+      <a class="btn btn-primary btn-sm btn-block"  href="{% url 'create_order' %}">Create Customer</a>
+
+
 
       <table class="table">
         <thead class="thead-dark">
           <tr>
+            <th></th>
             <th scope="col">Customer</th>
             <th scope="col">Phone</th>
           </tr>
@@ -25,6 +29,7 @@
           
         {% for cust in customer %}
           <tr>
+            <td><a class="btn-sm btn-info" href="{% url 'consumer' cust.id %}">View</a></td>
             <td>{{cust.name}}</td>
             <td>{{cust.phone}}</td>
           </tr>
@@ -39,6 +44,8 @@
 
 
     <div class="col-sm-7">
+
+      <a class="btn btn-primary btn-sm btn-block"  href="{% url 'create_order' %}">Create Order</a>
 
       <table class="table">
         <thead class="thead-dark">
@@ -58,17 +65,16 @@
           <td>{{ord.product}}</td>
           <td>{{ord.date_created}}</td>
           <td>{{ord.status}}</td>
-          <td>Update</td>
-          <td>Remove</td>
+          <td><a class="btn-sm btn-info" href="{% url 'update_order' ord.id %}">Update</a></td>
+          <td><a class="btn-sm btn-danger" href="{% url 'delete_order' ord.id %}">Remove</a></td>
+          
         </tr>
 
       {% endfor %}
 
-
-
         </tbody>
       </table>
-    
+  
     
     </div>
   </div>
