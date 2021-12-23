@@ -7,32 +7,42 @@ from .models import *
 
 from .forms import OrderForm , CreateUserForm
 from .filters import OrderFilter
+from .decorators import unauth_user, allowed_user , admin_only
 
 from django.contrib import messages
 
 from django.contrib.auth import authenticate , login , logout
 
 from django.contrib.auth.decorators import login_required
+
+from django.contrib.auth.models import Group
 # from django.contrib.auth.forms import UserCreationForm
 
 # Create your views here.
 
-
+@unauth_user
 def registerpage(request):
     form = CreateUserForm()
 
     if request.method== 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            user = form.cleaned_data.get('username')    
-            messages.success(request , 'Account Successfully created for ' +user)
+            user = form.save()
+            username = form.cleaned_data.get('username')    
+
+            group = Group.objects.get(name = "customer")
+            user.groups.add(group)
+
+
+            messages.success(request , 'Account Successfully created for ' +username)
 
             return redirect('login')
     
     context = {'form' : form}
     return render(request , 'accounts/registerpage.html', context)
 
+
+@unauth_user
 def loginpage(request):
 
     if request.method == 'POST':
@@ -57,6 +67,7 @@ def logoutUser(request):
 
 
 @login_required(login_url='login')
+@admin_only
 def home(request):
     
     orders = Order.objects.all()
@@ -74,10 +85,16 @@ def home(request):
 
     return render(request , 'accounts/dashboard.html' , context)
 
+def userpage(request):
+    context = {}
+    return render(request , 'accounts/userpage.html' , context)
+
+@allowed_user(allowed_roles = ['admin'])
 def products(request):
     products = Product.objects.all()
     return render(request , 'accounts/products.html' , {'product' : products})
 
+@allowed_user(allowed_roles = ['admin'])
 def customer(request , pk):
     customer = Customer.objects.get(id = pk)
     orders = customer.order_set.all()
@@ -93,12 +110,11 @@ def customer(request , pk):
     return render(request , 'accounts/customer.html' , context)
 
 
+@allowed_user(allowed_roles = ['admin'])
 def createOrder(request):
     form = OrderForm()
-
     if request.method == 'POST':
         form = OrderForm(request.POST)
-
         if(form.is_valid()):
             form.save()
             return redirect('/')
@@ -107,6 +123,7 @@ def createOrder(request):
     return render(request , 'accounts/order_form.html' , context)
 
 
+@allowed_user(allowed_roles = ['admin'])
 def updateOrder(request , pk):
 
     order = Order.objects.get(id = pk)
@@ -122,6 +139,7 @@ def updateOrder(request , pk):
     context = {'form': form}
     return render(request , 'accounts/order_form.html' , context)
 
+@allowed_user(allowed_roles = ['admin'])
 def deleteOrder(request , pk):
     order = Order.objects.get(id = pk)
 
@@ -130,6 +148,4 @@ def deleteOrder(request , pk):
         return redirect('/')
     
     context = {'order': order}
-
-
     return render(request , 'accounts/delete.html' , context)

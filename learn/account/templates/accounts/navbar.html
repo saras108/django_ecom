@@ -4,6 +4,8 @@
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
+
+      {% if request.user.is_staff %}
       <ul class="navbar-nav">
         <li class="nav-item active">
           <a class="nav-link" href="#">Dashboard <span class="sr-only">(current)</span></a>
@@ -12,6 +14,9 @@
           <a class="nav-link" href="#">Product</a>
         </li>
       </ul>
+
+      {% endif %}
+      
     </div>
 
     <span style="color: #fff; font-size: 18px; margin-right: 20px;">Hello, {{request.user}} </span>
