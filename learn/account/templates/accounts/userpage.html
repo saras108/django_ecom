@@ -2,8 +2,58 @@
 
 {% block content%}
 
+{% include 'accounts/status.html' %}
+  
+  <div class="row">
+    <div class="col">
+      <div class="card card-body">
+        <form action="get">
 
-<h1>Userpage</h1>
+          {{my_filter.form}}
 
+          <button class="btn btn-primary" type="submit">Search</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <br>
+
+<div class="row">
+    
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Catagory</th>
+            <th scope="col">Date Ordered</th>
+            <th scope="col">Status</th>
+            <th scope="col">Update</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for ord in orders %}
+
+        <tr>
+          <td>{{ord.product}}</td>
+          <td>{{ord.product.catagory}}</td>
+          <td>{{ord.date_created}}</td>
+          <td>{{ord.status}}</td>
+          <td>Update</td>
+          <td>Remove</td>
+        </tr>
+      {%endfor %}
+        </tbody>
+      </table>
+    
+  </div>
+
+<!-- </div> -->
 
 {% endblock %}

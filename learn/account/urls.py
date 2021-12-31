@@ -13,6 +13,7 @@ urlpatterns = [
     
     path('product/', views.products , name='product'),
     path('user/', views.userpage , name='user_page'),
+    path('account/', views.accountSettings , name='account'),
     path('customer/<str:pk>/', views.customer , name='consumer'),
 
     path('create_order/', views.createOrder , name='create_order'),
