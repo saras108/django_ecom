@@ -10,6 +10,6 @@ def consumer_profile(sender , instance , created , **kwargs):
 
         Customer.objects.create(user = instance , name  = instance.username)
 
-post_save.connect(consumer_profile , sender = User)
+post_save.connect(consumer_profile , sender = User) 
 
 
