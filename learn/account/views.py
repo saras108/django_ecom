@@ -28,11 +28,8 @@ def registerpage(request):
         if form.is_valid():
             user = form.save()
             username = form.cleaned_data.get('username')    
-
-            group = Group.objects.get(name = "customer")
-            user.groups.add(group)
-
-            Customer.objects.create(user = user , name  = username)
+            
+            #signals will do the remaning jobs.
 
             messages.success(request , 'Account Successfully created for ' +username)
 
@@ -119,7 +116,6 @@ def accountSettings(request):
     context = { 'form' : form}
     return render(request , 'accounts/account_settings.html' , context)
 
-    
 
 # @allowed_user(allowed_roles = ['admin'])
 def products(request):
