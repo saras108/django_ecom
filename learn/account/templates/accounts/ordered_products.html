@@ -1,0 +1,48 @@
+{% extends 'accounts/main.html' %}
+
+{% block content%}
+
+<h1>Pending Orders</h1>
+
+
+<div class="container">
+
+  <br>
+  <div class="container">
+
+<div class="row">
+
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Ordered By</th>
+            <th scope="col">Ordered Date</th>
+            <th scope="col">Status</th>
+            <th scope="col">Update</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          
+        {% for ord in orders %}
+        <tr>
+          <td>{{ord.product}}</td>
+          <td>{{ord.customer.name}}</td>
+          <td>{{ord.date_created}}</td>
+          <td>{{ord.status}}</td>
+          <td><a class="btn-sm btn-info" href="{% url 'update_order' ord.id %}">Update</a></td>
+        </tr>
+
+      {% endfor %}
+
+        </tbody>
+      </table>
+  
+    
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
