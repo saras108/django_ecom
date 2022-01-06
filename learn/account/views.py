@@ -6,7 +6,7 @@ from django.http import HttpResponse
 
 from .models import *
 
-from .forms import OrderForm , CreateUserForm , CustomerForm
+from .forms import OrderForm , CreateUserForm , CustomerForm , ProductForm
 from .filters import OrderFilter
 from .decorators import unauth_user, allowed_user , admin_only
 
@@ -68,19 +68,20 @@ def logoutUser(request):
 @admin_only
 def home(request):
     
-    orders = Order.objects.all()
-
+    products = Product.objects.all()
     customer = Customer.objects.all()
-
     total_customers = customer.count()
     
-    order_count = orders.count()
+    order_count = Order.objects.count()
 
-    deliverd = orders.filter(status = 'Delivered').count()
-    pending = orders.filter(status = 'Pending').count()
+    deliverd = Order.objects.filter(status = 'Delivered').count()
+    pending = Order.objects.filter(status = 'Pending').count()
 
-    context = {'orders': orders , 'customer': customer , 'total_consumer':total_customers, 'order_count':order_count, 'deliverd': deliverd , 'pending': pending} 
+    context = {'products': products , 'customer': customer , 'total_consumer':total_customers, 'order_count':order_count, 'deliverd': deliverd , 'pending': pending} 
 
+    # orders = Product.objects.all()
+    # orders = Product.objects.all()
+    # return HttpResponse(Product.objects.all())
 
     return render(request , 'accounts/dashboard.html' , context)
 
@@ -140,12 +141,21 @@ def accountSettings(request):
     return render(request , 'accounts/account_settings.html' , context)
 
 
-# @allowed_user(allowed_roles = ['admin'])
+@login_required(login_url='login')
+@allowed_user(allowed_roles = ['admin'])
+def all_orders(request):
+    orders = Order.objects.filter(status = 'Pending')
+    # return HttpResponse(orders)
+
+    return render(request , 'accounts/ordered_products.html' , {'orders' : orders})
+
+
+@allowed_user(allowed_roles = ['admin'])
 def products(request):
     products = Product.objects.all()
     return render(request , 'accounts/products.html' , {'product' : products})
 
-# @allowed_user(allowed_roles = ['admin'])
+@allowed_user(allowed_roles = ['admin'])
 def customer(request , pk):
 
     customer = Customer.objects.get(id = pk)
@@ -192,7 +202,7 @@ def updateOrder(request , pk):
     context = {'form': form}
     return render(request , 'accounts/order_form.html' , context)
 
-@allowed_user(allowed_roles = ['customer' , 'admin'])
+@allowed_user(allowed_roles = ['customer'])
 def deleteOrder(request , pk):
     order = Order.objects.get(id = pk)
 
@@ -202,3 +212,42 @@ def deleteOrder(request , pk):
     
     context = {'order': order}
     return render(request , 'accounts/delete.html' , context)
+
+
+def createProduct(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if(form.is_valid()):
+            form.save()
+            return redirect('/')
+
+    form = ProductForm()
+    context = {'form': form}
+    return render(request , 'accounts/product_form.html' , context)
+   
+
+def updateProduct(request , pk):
+    product = Product.objects.get(id = pk)
+    form = ProductForm(instance= product)
+
+    if request.method == 'POST':
+        form = ProductForm(request.POST , instance=product)
+
+        if(form.is_valid()):
+            form.save()
+            return redirect('/')
+    
+    context = {'form': form}
+    return render(request , 'accounts/product_form.html' , context)
+
+
+def deleteProduct(request , pk):
+    
+    product = Product.objects.get(id = pk)
+
+    if request.method == 'POST':
+        product.delete()
+        return redirect('/')
+    
+    context = {'product': product}
+    return render(request , 'accounts/delete_product.html' , context)
