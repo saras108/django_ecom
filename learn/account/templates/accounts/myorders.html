@@ -1,0 +1,40 @@
+{% extends 'accounts/main.html' %}
+
+{% block content%}
+
+{% include 'accounts/status.html' %}
+  
+  <br>
+  
+<div class="row">
+    
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Product</th>
+            <th scope="col">Catagory</th>
+            <th scope="col">Date Ordered</th>
+            <th scope="col">Status</th>
+            <th scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for ord in orders %}
+
+        <tr>
+          <td>{{ord.product}}</td>
+          <td>{{ord.product.catagory}}</td>
+          <td>{{ord.date_created}}</td>
+          <td>{{ord.status}}</td>
+          <td><a class="btn-sm btn-danger" href="{% url 'delete_order' ord.id %}">Remove</a></td>
+        </tr>
+      {%endfor %}
+        </tbody>
+      </table>
+    
+  </div>
+
+<!-- </div> -->
+
+{% endblock %}
