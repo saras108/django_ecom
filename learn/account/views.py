@@ -1,3 +1,5 @@
+from django.contrib.messages.api import success
+from django.forms.forms import Form
 from django.shortcuts import render, redirect
 
 from django.http import HttpResponse
@@ -37,7 +39,6 @@ def registerpage(request):
     
     context = {'form' : form}
     return render(request , 'accounts/registerpage.html', context)
-
 
 @unauth_user
 def loginpage(request):
@@ -84,8 +85,30 @@ def home(request):
     return render(request , 'accounts/dashboard.html' , context)
 
 @login_required(login_url='login')
+@allowed_user(allowed_roles = ['customer', 'admin'])
+def userpage(request):    
+    products = Product.objects.all()
+    context = {'products': products}
+
+    return render(request , 'accounts/userpage.html' , context)
+
+
+@login_required(login_url='login')
 @allowed_user(allowed_roles = ['customer'])
-def userpage(request):
+def cust_order(request):
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        form.save()
+        return redirect('/')
+
+    return HttpResponse('ERROR OCCURED')
+
+
+
+@login_required(login_url='login')
+@allowed_user(allowed_roles = ['customer'])
+def myorders(request):
 
     orders = request.user.customer.order_set.all()
 
@@ -99,7 +122,7 @@ def userpage(request):
 
     # context = {'orders': orders}
     
-    return render(request , 'accounts/userpage.html' , context)
+    return render(request , 'accounts/myorders.html' , context)
 
 
 @login_required(login_url='login')
@@ -140,7 +163,7 @@ def customer(request , pk):
     return render(request , 'accounts/customer.html' , context)
 
 
-# @allowed_user(allowed_roles = ['admin'])
+@allowed_user(allowed_roles = ['admin'])
 def createOrder(request):
     form = OrderForm()
     if request.method == 'POST':
@@ -153,7 +176,7 @@ def createOrder(request):
     return render(request , 'accounts/order_form.html' , context)
 
 
-# @allowed_user(allowed_roles = ['admin'])
+@allowed_user(allowed_roles = ['admin'])
 def updateOrder(request , pk):
 
     order = Order.objects.get(id = pk)
@@ -169,7 +192,7 @@ def updateOrder(request , pk):
     context = {'form': form}
     return render(request , 'accounts/order_form.html' , context)
 
-# @allowed_user(allowed_roles = ['admin'])
+@allowed_user(allowed_roles = ['customer' , 'admin'])
 def deleteOrder(request , pk):
     order = Order.objects.get(id = pk)
 

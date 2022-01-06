@@ -13,9 +13,11 @@ urlpatterns = [
     
     path('product/', views.products , name='product'),
     path('user/', views.userpage , name='user_page'),
+    path('myorders/', views.myorders , name='myorders'),
     path('account/', views.accountSettings , name='account'),
     path('customer/<str:pk>/', views.customer , name='consumer'),
 
+    path('create_order_user/', views.cust_order , name='create_order_user'),
     path('create_order/', views.createOrder , name='create_order'),
     path('update_order/<str:pk>/', views.updateOrder , name='update_order'),
     path('delete_order/<str:pk>/', views.deleteOrder , name='delete_order'),

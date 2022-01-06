@@ -2,58 +2,41 @@
 
 {% block content%}
 
-{% include 'accounts/status.html' %}
-  
+<div class="container">
+
   <div class="row">
-    <div class="col">
-      <div class="card card-body">
-        <form action="get">
 
-          {{my_filter.form}}
+    {% for product in products %} 
 
-          <button class="btn btn-primary" type="submit">Search</button>
+    
+    <div col-md-4>      
+      <div class="card" style="width: 18rem;">
+        <!-- <img class="card-img-top" src=# alt="Card image cap"> -->
+        <div class="card-body">
+          <h5 class="card-title" style="text-align: center;">{{product.name}}</h5>
+          <p class="card-text" style="text-align: center;">{{product.price}}</p>
+        </div>
+        <div class="card-body">
+          <form action="{% url 'create_order_user' %}" method="post">
+            {% csrf_token%}
+            <input type="hidden" name="customer" value="{{ request.user.customer.id }}">
+            <input type="hidden" name="product" value="{{product.id}}">
+            <input type="hidden" name="status" value="Pending">
+            <!-- {{MyOrderForm}} -->
+            <button type="submit" class="btn btn-info" style="text-align: center;" name="Submit" value="Submit">Place Order</button>
 
-        </form>
+          </form>
+        </div>
       </div>
     </div>
+    {%endfor %}
+
+    
+
   </div>
 
 
+</div>
 
-
-  <br>
-
-<div class="row">
-    
-      <table class="table">
-        <thead class="thead-dark">
-          <tr>
-            <th scope="col">Product</th>
-            <th scope="col">Catagory</th>
-            <th scope="col">Date Ordered</th>
-            <th scope="col">Status</th>
-            <th scope="col">Update</th>
-            <th scope="col">Remove</th>
-          </tr>
-        </thead>
-        <tbody>
-
-          {% for ord in orders %}
-
-        <tr>
-          <td>{{ord.product}}</td>
-          <td>{{ord.product.catagory}}</td>
-          <td>{{ord.date_created}}</td>
-          <td>{{ord.status}}</td>
-          <td>Update</td>
-          <td>Remove</td>
-        </tr>
-      {%endfor %}
-        </tbody>
-      </table>
-    
-  </div>
-
-<!-- </div> -->
 
 {% endblock %}

@@ -4,7 +4,6 @@ from django import forms
 from .models import Customer, Order
 from django.contrib.auth.models import User
 
-
 class OrderForm(ModelForm):
     class Meta:
         model = Order
