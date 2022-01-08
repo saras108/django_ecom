@@ -149,12 +149,14 @@ def all_orders(request):
 
     return render(request , 'accounts/ordered_products.html' , {'orders' : orders})
 
-
+@login_required(login_url='login')
 @allowed_user(allowed_roles = ['admin'])
 def products(request):
     products = Product.objects.all()
     return render(request , 'accounts/products.html' , {'product' : products})
 
+
+@login_required(login_url='login')
 @allowed_user(allowed_roles = ['admin'])
 def customer(request , pk):
 
@@ -173,6 +175,7 @@ def customer(request , pk):
     return render(request , 'accounts/customer.html' , context)
 
 
+@login_required(login_url='login')
 @allowed_user(allowed_roles = ['admin'])
 def createOrder(request):
     form = OrderForm()
@@ -186,6 +189,7 @@ def createOrder(request):
     return render(request , 'accounts/order_form.html' , context)
 
 
+@login_required(login_url='login')
 @allowed_user(allowed_roles = ['admin'])
 def updateOrder(request , pk):
 
@@ -202,6 +206,7 @@ def updateOrder(request , pk):
     context = {'form': form}
     return render(request , 'accounts/order_form.html' , context)
 
+@login_required(login_url='login')
 @allowed_user(allowed_roles = ['customer'])
 def deleteOrder(request , pk):
     order = Order.objects.get(id = pk)
@@ -214,6 +219,8 @@ def deleteOrder(request , pk):
     return render(request , 'accounts/delete.html' , context)
 
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles = ['admin'])
 def createProduct(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -226,6 +233,8 @@ def createProduct(request):
     return render(request , 'accounts/product_form.html' , context)
    
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles = ['admin'])
 def updateProduct(request , pk):
     product = Product.objects.get(id = pk)
     form = ProductForm(instance= product)
@@ -241,6 +250,8 @@ def updateProduct(request , pk):
     return render(request , 'accounts/product_form.html' , context)
 
 
+@login_required(login_url='login')
+@allowed_user(allowed_roles = ['admin'])
 def deleteProduct(request , pk):
     
     product = Product.objects.get(id = pk)
