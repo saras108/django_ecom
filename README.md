@@ -78,7 +78,8 @@ After logged in as a Admin, do the following:
 
 9.1.1. Add the group named 'admin' and 'customer' from admin panal and assign the role of admin to the superuser.
 
-#vedio link
+
+https://user-images.githubusercontent.com/44153868/148657387-7c508f3f-5958-4b4a-9718-0dee20075898.mp4
 
 
 
