@@ -15,7 +15,7 @@
             <th scope="col">Catagory</th>
             <th scope="col">Date Ordered</th>
             <th scope="col">Status</th>
-            <th scope="col">Remove</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -27,7 +27,11 @@
           <td>{{ord.product.catagory}}</td>
           <td>{{ord.date_created}}</td>
           <td>{{ord.status}}</td>
+          {% if ord.status == 'Pending' %}
           <td><a class="btn-sm btn-danger" href="{% url 'delete_order' ord.id %}">Remove</a></td>
+          {%else%}
+          <td>Thank you!</td>
+          {%endif%}
         </tr>
       {%endfor %}
         </tbody>

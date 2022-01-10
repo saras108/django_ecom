@@ -8,7 +8,10 @@ There are 2 groups of the user, Admin and Customer.
 3. Can update the status (pending , Delivered, Out of Stoke) of the ordered product
 4. Can view the orders of individual costumer as well as all costumers.
 
-- While Customer can place the order and delete and view the details of placed orders by self.
+- While Customer can:
+1. Place the order
+2. Delete and view the details of placed orders by self.
+3. Update own profile info i.e Phone Number , Profile Picture and so on
 
 ## Installation
 

@@ -2,19 +2,46 @@
 
 {% block content%}
 
+
+<style>
+
+  .profile_pic{
+      max-width:200px ;
+      max-height:200px ; 
+      margin:0 auto ;  
+  }
+</style>
+
+
 <div class="container">
-
   <div class="row">
-
-    {% for product in products %} 
-
     
-    <div col-md-4>      
-      <div class="card" style="width: 18rem;">
+    <div class="col-md-3">
+      <h3>Make a Choice</h3>
+    <a href="{% url 'home' %}">All Products</a>
+    <br>
+    {% for tag in tags %} 
+    <a href="{% url 'tag_product' tag.id %}">{{tag}}</a>
+    <br>  
+        {%endfor %}
+    </div>
+  
+
+    <div class="col-md-9">  
+      <div class="row"> 
+      
+    {% for product in products %} 
+      
+      <div class="card" style="margin-right: 5px; width: 6cm;">
         <!-- <img class="card-img-top" src=# alt="Card image cap"> -->
         <div class="card-body">
+          <img src="{{product.img.url}}" alt="Product Picture" class="profile_pic">
+
           <h5 class="card-title" style="text-align: center;">{{product.name}}</h5>
           <p class="card-text" style="text-align: center;">{{product.price}}</p>
+          {% for data in product.tag.all %}
+            <span class="badge">{{ data}}</span>
+          {% endfor %}
         </div>
         <div class="card-body">
           <form action="{% url 'create_order_user' %}" method="post">
@@ -22,21 +49,14 @@
             <input type="hidden" name="customer" value="{{ request.user.customer.id }}">
             <input type="hidden" name="product" value="{{product.id}}">
             <input type="hidden" name="status" value="Pending">
-            <!-- {{MyOrderForm}} -->
+      
             <button type="submit" class="btn btn-info" style="text-align: center;" name="Submit" value="Submit">Place Order</button>
 
           </form>
         </div>
       </div>
-    </div>
     {%endfor %}
-
-    
-
   </div>
-
-
+    </div>
 </div>
-
-
 {% endblock %}

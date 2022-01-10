@@ -90,12 +90,16 @@ def home(request):
 @allowed_user(allowed_roles = ['customer', 'admin'])
 def userpage(request): 
     try:   
-        products = Product.objects.all()
-        context = {'products': products}
+        
+        products = Product.objects.all()  
+        tags = Tag.objects.all()
+        context = {'products': products , 'tags':tags}
         return render(request , 'accounts/userpage.html' , context)
+       
     except:
         return HttpResponse('ERROR OCCURED')
 
+    
 @login_required(login_url='login')
 @allowed_user(allowed_roles = ['customer'])
 def cust_order(request):
@@ -229,7 +233,7 @@ def deleteOrder(request , pk):
 def createProduct(request):
     try:
         if request.method == 'POST':
-            form = ProductForm(request.POST)
+            form = ProductForm(request.POST ,  request.FILES)
             if(form.is_valid()):
                 form.save()
                 return redirect('/')
@@ -247,7 +251,7 @@ def updateProduct(request , pk):
         product = Product.objects.get(id = pk)
         form = ProductForm(instance= product)
         if request.method == 'POST':
-            form = ProductForm(request.POST , instance=product)
+            form = ProductForm(request.POST , request.FILES ,instance=product)
             if(form.is_valid()):
                 form.save()
                 return redirect('/')
@@ -269,3 +273,14 @@ def deleteProduct(request , pk):
         return render(request , 'accounts/delete_product.html' , context)
     except:
         return HttpResponse('ERROR OCCURED')
+
+
+@login_required(login_url='login')
+def tagsProduct(request,pk):
+    try:        
+        products = Product.objects.filter(tag=pk)
+        tags = Tag.objects.all()
+        context = {'products': products , 'tags':tags}
+        return render(request , 'accounts/userpage.html' , context)
+    except:
+        return('Error Occured')
