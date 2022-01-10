@@ -40,4 +40,8 @@ urlpatterns = [
     path('reset/done/', auth_views.PasswordResetCompleteView.as_view(template_name = "accounts/password_reset_done.html") ,
         name='password_reset_complete'),
 
+    path('tag_product/<str:pk>/', views.tagsProduct , name='tag_product'),
+
+
+
 ]
